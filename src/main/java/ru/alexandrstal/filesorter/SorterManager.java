@@ -23,15 +23,20 @@ public class SorterManager {
 
         for (File file : listOfFiles) {
             if (file.isFile()) {
-                Path pathForFile = sorter.pathToFile(file);
-                Path pathForMove = currentPath.resolve(pathForFile);
+                try {
+                    Path pathForFile = sorter.pathToFile(file);
+                    Path pathForMove = currentPath.resolve(pathForFile);
 
-                File pfm = pathForMove.toFile();
-                if (!pfm.exists()) {
-                    pfm.mkdirs();
+                    File pfm = pathForMove.toFile();
+                    if (!pfm.exists()) {
+                        pfm.mkdirs();
+                    }
+                    Path mvPath = pathForMove.resolve(file.getName());
+                    Files.move(file.toPath(), mvPath, StandardCopyOption.REPLACE_EXISTING);
+                    System.out.println("Файл " + file.getAbsolutePath() + " копируется в " + mvPath.toFile().getAbsolutePath());
+                }catch (Exception e){
+                    System.err.println("Ошибка при работе с файлом " + file.getAbsolutePath());
                 }
-                Files.move(file.toPath(), pathForMove.resolve(file.getName()),StandardCopyOption.REPLACE_EXISTING);
-
                 
             }
         }

@@ -25,6 +25,6 @@ public class YearMonthSorter implements Sorter {
         BasicFileAttributes attr
                 = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
 
-        return Paths.get(df.format(attr.creationTime().toMillis()));
+        return Paths.get(df.format(attr.lastModifiedTime().toMillis()));
     }
 }
